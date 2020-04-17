@@ -1,0 +1,112 @@
+﻿@model WebApplication12.Models.SkloništeView
+
+
+
+<h2>Instructors</h2>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Adresa</th>
+            <th>Grad</th>
+            <th>Tel</th>
+            <th>Mail</th>
+            <th>Web</th>
+            <th>Novosti</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Skloništa)
+        {
+            string selectedRow = "";
+            if (item.Id == (int?)ViewData["SkloništeID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Naziv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adresa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Web)
+                </td>
+
+                <td>
+                    @{
+                        foreach (var post in item.PostsSkloništa)
+                        {
+                            @post.Sklonište.Id @:  @post.Sklonište.Naziv <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }|
+                    <a asp-action="Details">Details</a> |
+
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.PostSkloništa != null)
+{
+    <h3>Novosti iz ove udruge</h3>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>Naslov</th>
+      
+            <th>Datum</th>
+        </tr>
+
+        @foreach (var item in Model.PostSkloništa)
+        {
+            string selectedRow = "";
+            if (item.Id == (int?)ViewData["PostID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Details", "PostSkloništa", new { Id = item.Id })
+                </td>
+                <td>
+                    @item.Naziv
+                </td>
+              
+                <td>
+                    @item.Datum
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+

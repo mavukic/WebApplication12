@@ -1,0 +1,87 @@
+﻿@model IEnumerable<WebApplication12.Models.Ljubimac>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sklonište)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mjesto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vrsta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Godine)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Slika)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Datum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sklonište.Naziv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mjesto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vrsta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Godine)
+                </td>
+
+                <td>
+                    <img src="~/slike/@item.Slika" width="150" height="150" />
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }|
+                    <a asp-controller="Posvajatelji" asp-action="Create">Posvoji</a> |
+
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
